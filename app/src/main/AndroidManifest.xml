@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- الاتصال بالإنترنت فقط عند طلب المستخدم اليدوي لميزات الذكاء الاصطناعي -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- الاهتزاز الخفيف عند لمس المفاتيح -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- للتعرف على الكلام (Android 11+: رؤية خدمات التعرف) -->
+    <queries>
+        <intent>
+            <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SmartArabicKeyboard"
+        tools:targetApi="35">
+
+        <!-- خدمة لوحة المفاتيح الرئيسية (Android InputMethodService) -->
+        <service
+            android:name=".ime.SmartKeyboardService"
+            android:exported="true"
+            android:label="@string/ime_service_label"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
+        <!-- واجهة الإعدادات والتخصيص ومفتاح API الآمن -->
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- استوديو الإعلانات بالذكاء الاصطناعي -->
+        <activity
+            android:name=".ui.ads.AdStudioActivity"
+            android:exported="false"
+            android:label="@string/ad_studio_title"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- الإملاء الصوتي: نافذة شفافة تشغّل خدمة التعرف على الكلام -->
+        <activity
+            android:name=".ui.VoiceInputActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- مشاركة الصورة الإعلانية عبر ملف مؤقت في الكاش -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+
+</manifest>

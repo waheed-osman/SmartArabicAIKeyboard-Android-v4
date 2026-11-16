@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">لوحة القلم الذكية</string>
+    <string name="ime_service_label">لوحة المفاتيح العربية الذكية (Qalam AI)</string>
+    <string name="subtype_arabic">العربية (التشكيل والذكاء الاصطناعي)</string>
+    <string name="subtype_english">English (US + PC Shortcuts)</string>
+    <string name="ad_studio_title">استوديو الإعلانات</string>
+</resources>
